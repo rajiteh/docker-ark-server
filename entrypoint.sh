@@ -97,6 +97,10 @@ arkManager() {
 
     if [ -n "$1" ]; then
       echo "Executing: arkmanager $@"
+      if [ "$1" == "up" ]; then
+	echo "up command, checking for updates."
+        checkForUpdates
+      fi
       trapSignals
       arkmanager $@ &
       wait "$!"

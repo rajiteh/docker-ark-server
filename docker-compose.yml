@@ -5,7 +5,7 @@ services:
     tty: true
     restart: on-failure
     network_mode: host
-    cpuset: '0-7'
+    #cpuset: '0-7'
     stop_grace_period: 10m
     stop_signal: SIGTERM
     volumes:
