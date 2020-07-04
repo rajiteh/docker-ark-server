@@ -1,5 +1,5 @@
 #!/bin/bash
-AST_VERSION="${AST_VERSION:-v1.6.33}"
+AST_VERSION="${AST_VERSION:-v1.6.53}"
 CONFIG_BOOTSTRAP_DIR=/bootstrap
 declare -A CONFIG_PATHS;CONFIG_PATHS[".arkmanager.cfg"]="/home/steam/.arkmanager.cfg"
                         CONFIG_PATHS["main.cfg"]="/home/steam/.config/arkmanager/instances/main.cfg"
@@ -12,7 +12,9 @@ isASTInstalled() {
 }
 
 isASTVersionSameAs() {
-    local version=$1
+    local version="$1"
+    echo "Checking for version $version"
+    arkmanager --version
     echo "${version}" | grep -q "^v$(arkmanager --version | grep Version | awk '{print $2}')"
 }
 
@@ -24,7 +26,7 @@ installAST() {
         >&2 echo "ERROR: Couldn't create temp directory"
         exit 1
     fi
-
+    echo "Installing ark-server-tools ${version}"
     cd "${tempdir}"
     curl -LO https://github.com/FezVrasta/ark-server-tools/archive/${version}.zip
     unzip "${version}.zip"
@@ -78,9 +80,7 @@ trapSignals() {
 arkManager() {
     mustBeSteamUser
 
-    if ! (isASTInstalled && isASTVersionSameAs "${AST_VERSION}"); then
-        installAST "${AST_VERSION}"
-    fi
+    installAST "${AST_VERSION}"
 
     if [ -d "${CONFIG_BOOTSTRAP_DIR}" ]; then
         bootstrapConfig "${CONFIG_BOOTSTRAP_DIR}"
@@ -97,7 +97,7 @@ arkManager() {
 
     if [ -n "$1" ]; then
       echo "Executing: arkmanager $@"
-      if [ "$1" == "up" ]; then
+      if [ "$1" == "run" ]; then
 	echo "up command, checking for updates."
         checkForUpdates
       fi

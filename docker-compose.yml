@@ -1,7 +1,8 @@
 version: '2'
 services:
   ark:
-    build: .
+    build: 
+      context: .
     tty: true
     restart: on-failure
     network_mode: host
@@ -11,6 +12,7 @@ services:
     volumes:
       - ./data:/home/steam
       - ./bootstrap:/bootstrap:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
     ulimits:
       nproc: 100000
       nofile:
