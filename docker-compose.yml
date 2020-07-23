@@ -1,7 +1,7 @@
 version: '2'
 services:
   s3sync:
-    image: vladgh/s3sync:505eb4e8
+    image: vladgh/s3sync:0.4
     env_file: bootstrap/s3sync.env
     command: sync
     environment:
