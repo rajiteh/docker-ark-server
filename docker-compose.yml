@@ -1,5 +1,13 @@
 version: '2'
 services:
+  s3sync:
+    image: vladgh/s3sync:505eb4e8
+    env_file: bootstrap/s3sync.env
+    command: sync
+    environment:
+      - SYNCDIR=/data/ARK-Backups
+    volumes:
+      - ./data:/data
   ark:
     build: 
       context: .
